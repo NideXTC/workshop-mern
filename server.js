@@ -7,7 +7,7 @@ require('dotenv').config()
 const app = express();
 
 app.use(require('cors')());
-
+app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -20,9 +20,9 @@ mongoose.connect(process.env.ATLAS_URI, {
   useFindAndModify: false
 });
 
-app.get('/', (req, res) => res.send('hello'));
+app.get('/*', (req, res) => express.static(path.join(__dirname, '../public/build')));
 
-app.use('/users', require('./routes/users'));
+app.use('/api/users', require('./routes/users'));
 
 
 app.listen(process.env.PORT || 3000);
